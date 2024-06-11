@@ -27,7 +27,7 @@ make run
 ```
 
 ## Endpoints:
-- Rest localhost:8000
+- Rest localhost:8000/order
   - [create_order](./api/create_order.http)
   - [Listar ordens](./api/list_order.http)
 - gRPC server localhost:50051
