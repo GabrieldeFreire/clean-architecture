@@ -12,27 +12,22 @@ services:
       - "${GRPC_SERVER_PORT}:${GRPC_SERVER_PORT}"
       - "${GRAPHQL_SERVER_PORT}:${GRAPHQL_SERVER_PORT}"
     depends_on:
-      mysql:
-        condition: service_healthy
       rabbitmq:
         condition: service_healthy
+      mysql:
+        condition: service_started
 
   mysql:
     image: mysql:5.7
     container_name: mysql
     restart: always
     environment:
-      MYSQL_ROOT_PASSWORD: ${DB_PASSWORD}
+      MYSQL_RANDOM_ROOT_PASSWORD: yes
       MYSQL_DATABASE: ${DB_NAME}
-      MYSQL_PASSWORD: ${DB_USER}
+      MYSQL_USER: ${DB_USER}
+      MYSQL_PASSWORD: ${DB_PASSWORD}
     ports:
-      - 3306:3306
-    healthcheck:
-      test: [ "CMD", "mysqladmin", "ping", "-h", "localhost" ]
-      start_period: 5s
-      interval: 5s
-      timeout: 20s
-      retries: 5
+      - 3306
     volumes:
       - ./database_populate:/docker-entrypoint-initdb.d:ro
 
